@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Running Ansible Playbook with Docker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains an Ansible playbook for deploying a Docker container with a React app using Apache. Below are instructions on how to run the Ansible playbook using Docker and what to expect as output.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+Make sure you have the following installed on your system:
 
-### `npm start`
+- Docker
+- Ansible
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## How to Run
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Clone this repository to your local machine:
 
-### `npm test`
+   ```bash
+   git clone https://github.com/your-username/your-repository.git
+Navigate to the repository directory:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   bash
+   cd your-repository
+Run the Ansible playbook using Docker:
 
-### `npm run build`
+    bash
+docker run --rm -v $(pwd):/ansible -w /ansible williamyeh/ansible:alpine3 ansible-playbook playbook.yml
+This command mounts the current directory ($(pwd)) as a volume inside the Docker container and sets it as the working directory. Then, it executes the ansible-playbook command within the container.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Expected Output
+The playbook will install the Docker Python module, create a Docker network, and deploy a Docker container with Apache serving a Html Page.
+The IP address of the container will be retrieved and stored in ip.txt.
+You can find the IP address of the container in the ip.txt file.
+The React app build files will be copied to the host machine's /tmp/network directory.
+Additionally, the IP address of the container will be displayed as output.
+Viewing the Html Page
+Once the playbook execution is complete, you can access the Html Page served by Apache using the IP address of the Docker container. Open a web browser and navigate to http://<container-ip>. Replace <container-ip> with the IP address retrieved from the ip.txt file.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Cleaning Up
+After you're done testing, you can remove the Docker container and network by running:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ ```bash
+docker container stop $(docker container ls -aq) && docker network prune -f

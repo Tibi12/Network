@@ -1,0 +1,49 @@
+---
+- name: Deploy Docker container with a static html page  using Apache server
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Install Docker Python module
+      pip:
+        name: docker
+
+    - name: Ensure /tmp/network directory exists
+      file:
+        path: /tmp/network
+        state: directory
+
+    - name: Create Docker network
+      docker_network:
+        name: apache_network
+        ipam_config:
+          - subnet: 172.168.10.0/30
+
+    - name: Create Docker container with Apache
+      docker_container:
+        name: network_container
+        image: httpd:latest
+        ports:
+          - "80:80"
+        volumes:
+          - /tmp/network:/usr/local/apache2/htdocs
+        networks:
+          - name: apache_network
+            
+    - name: Copy html page files to the host
+      copy:
+        src: /Users/admin/projects/network/index.html
+        dest: /tmp/network
+
+    - name: Retrieving IP
+      command: /usr/local/bin/docker inspect --format="{{'{{'}}range .NetworkSettings.Networks{{'}}'}}{{'{{'}}.IPAddress{{'}}'}}{{'{{'}}end{{'}}'}}" react_container
+      register: ip
+    
+    - name: Inventory update
+      blockinfile:
+        path: /Users/admin/projects/network/ip.txt
+        block: |
+                [target]
+                {{ ip.stdout }} ansible_user=root ansible_ssh_pass=root ansible_connection=ssh
+
+    - debug:
+        msg: "{{ ip.stdout }}"
