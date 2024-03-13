@@ -30,7 +30,7 @@ This command mounts the current directory ($(pwd)) as a volume inside the Docker
 The playbook will install the Docker Python module, create a Docker network, and deploy a Docker container with Apache serving a Html Page.
 The IP address of the container will be retrieved and stored in ip.txt.
 You can find the IP address of the container in the ip.txt file.
-The React app build files will be copied to the host machine's /tmp/network directory.
+The Html page will be copied to the host machine's /tmp/network directory.
 Additionally, the IP address of the container will be displayed as output.
 Viewing the Html Page
 Once the playbook execution is complete, you can access the Html Page served by Apache using the IP address of the Docker container. Open a web browser and navigate to http://<container-ip>. Replace <container-ip> with the IP address retrieved from the ip.txt file.
