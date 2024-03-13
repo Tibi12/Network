@@ -35,7 +35,7 @@
         dest: /tmp/network
 
     - name: Retrieving IP
-      command: /usr/local/bin/docker inspect --format="{{'{{'}}range .NetworkSettings.Networks{{'}}'}}{{'{{'}}.IPAddress{{'}}'}}{{'{{'}}end{{'}}'}}" react_container
+      command: /usr/local/bin/docker inspect --format="{{'{{'}}range .NetworkSettings.Networks{{'}}'}}{{'{{'}}.IPAddress{{'}}'}}{{'{{'}}end{{'}}'}}" network_container
       register: ip
     
     - name: Inventory update
