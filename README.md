@@ -15,14 +15,15 @@ Make sure you have the following installed on your system:
 
    ```bash
    git clone https://github.com/your-username/your-repository.git
-Navigate to the repository directory:
+2. Navigate to the repository directory:
 
-   bash
+   ```bash
    cd your-repository
-Run the Ansible playbook using Docker:
 
-    bash
-docker run --rm -v $(pwd):/ansible -w /ansible williamyeh/ansible:alpine3 ansible-playbook playbook.yml
+3. Run the Ansible playbook using Docker:
+    ```bash
+    docker run --rm -v $(pwd):/ansible -w /ansible williamyeh/ansible:alpine3 ansible-playbook playbook.yml
+
 This command mounts the current directory ($(pwd)) as a volume inside the Docker container and sets it as the working directory. Then, it executes the ansible-playbook command within the container.
 
 ## Expected Output
