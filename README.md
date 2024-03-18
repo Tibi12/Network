@@ -20,13 +20,22 @@ Make sure you have the following installed on your system:
 
    ```bash
    cd your-repository
-4.Add ansible.cfg and inventory.text file with your credentials
-   ```bash ancible.cfg
+3.Add ansible.cfg 
+   ```bash
+   #ancible.cfg
    [defaults]
-   inventory = <your path>
+   inventory = <your-path>
    ansible_host_key_checking = False
-   control_path = /Users/admin/projects/network/ansible_control/ansible-ssh-192.168.64.2-22-kali
-3. Run the Ansible playbook using Docker:
+   control_path = <your-path>
+   ```
+   and inventory.text file with your credentials
+   ```bash
+   #inventory
+   [target-machine]
+   <ip-address-of-target-machine> ansible_connection=ssh ansible_user=username ansible_ssh_pass=password
+   ```
+   
+4. Run the Ansible playbook using Docker:
     ```bash
     docker run --rm -v $(pwd):/ansible -w /ansible williamyeh/ansible:alpine3 ansible-playbook playbook.yml
 
