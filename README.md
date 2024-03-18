@@ -6,8 +6,9 @@ This repository contains an Ansible playbook for deploying a Docker container wi
 
 Make sure you have the following installed on your system:
 
-- Docker
+- Virtual Box with a linux opertaing system
 - Ansible
+- ssh
 
 ## How to Run
 
@@ -19,7 +20,12 @@ Make sure you have the following installed on your system:
 
    ```bash
    cd your-repository
-
+4.Add ansible.cfg and inventory.text file with your credentials
+   ```bash ancible.cfg
+   [defaults]
+   inventory = <your path>
+   ansible_host_key_checking = False
+   control_path = /Users/admin/projects/network/ansible_control/ansible-ssh-192.168.64.2-22-kali
 3. Run the Ansible playbook using Docker:
     ```bash
     docker run --rm -v $(pwd):/ansible -w /ansible williamyeh/ansible:alpine3 ansible-playbook playbook.yml

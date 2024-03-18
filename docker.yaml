@@ -1,11 +1,17 @@
 ---
 - name: Deploy Docker container with a static html page  using Apache server
-  hosts: localhost
+  hosts: kali-machine
   gather_facts: no
   tasks:
     - name: Install Docker Python module
       pip:
         name: docker
+    
+    - name: Ensure Docker is installed
+      become: yes
+      apt:
+        name: docker.io
+        state: present
 
     - name: Ensure /tmp/network directory exists
       file:
@@ -35,15 +41,8 @@
         dest: /tmp/network
 
     - name: Retrieving IP
-      command: /usr/local/bin/docker inspect --format="{{'{{'}}range .NetworkSettings.Networks{{'}}'}}{{'{{'}}.IPAddress{{'}}'}}{{'{{'}}end{{'}}'}}" network_container
+      command: docker inspect --format="{{'{{'}}range .NetworkSettings.Networks{{'}}'}}{{'{{'}}.IPAddress{{'}}'}}{{'{{'}}end{{'}}'}}" network_container
       register: ip
-    
-    - name: Inventory update
-      blockinfile:
-        path: /Users/admin/projects/network/ip.txt
-        block: |
-                [target]
-                {{ ip.stdout }} ansible_user=root ansible_ssh_pass=root ansible_connection=ssh
 
     - debug:
         msg: "{{ ip.stdout }}"
